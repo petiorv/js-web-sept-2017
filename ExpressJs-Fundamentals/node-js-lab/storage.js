@@ -17,9 +17,12 @@ function isExist(key) {
 }
 
 let put = (key, value) => {
-    if (isString(key) && isExist(key)) {
-        db[key] = value;
-    }
+    return new Promise((resolve, reject) => {
+        if (!isString(key) && !isExist(key)) {
+            reject;
+        }
+    })
+    
 
 }
 
