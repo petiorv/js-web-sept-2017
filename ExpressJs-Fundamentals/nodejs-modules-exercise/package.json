@@ -7,5 +7,9 @@
     "start": "node index.js"
   },
   "author": "PV",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "formidable": "^1.1.1",
+    "shortid": "^2.2.8"
+  }
 }
