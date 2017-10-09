@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-modules-exercise",
+  "version": "1.0.0",
+  "description": "exercise",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "PV",
+  "license": "MIT"
+}
