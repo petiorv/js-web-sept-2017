@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "formidable": "^1.1.1",
+    "mime": "^2.0.3",
     "shortid": "^2.2.8"
   }
 }

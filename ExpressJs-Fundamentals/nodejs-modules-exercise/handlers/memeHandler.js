@@ -47,27 +47,78 @@ let viewAddMeme = (req, res) => {
   });
 };
 
+let viewAddMemeError = (req, res) => {
+  fs.readFile('./views' + req.pathname + '.html', 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.writeHead(200, {
+      'Content-Type': 'text/html'
+    });
+    data = data.toString().replace('<div id="replaceMe">{{replaceMe}}</div>', '<div id="errBox"><h2 id="errMsg">Please fill all fields</h2></div>');
+    res.write(data);
+    res.end();
+  });
+};
+
+let viewAddMemeSuccess = (req, res) => {
+  fs.readFile('./views' + req.pathname + '.html', 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.writeHead(200, {
+      'Content-Type': 'text/html'
+    });
+    data = data.toString().replace('<div id="replaceMe">{{replaceMe}}</div>', '<div id="succssesBox"><h2 id="succssesMsg">Meme Added</h2></div>');
+    res.write(data);
+    res.end();
+  });
+};
+
+let memeGenerator = (id, title, memeSrc, description, privacy) => {
+  return {
+    id: id,
+    title: title,
+    memeSrc: memeSrc,
+    description: description,
+    privacy: privacy,
+    dateStamp: Date.now()
+  };
+
+};
 let addMeme = (req, res) => {
   let form = new formidable.IncomingForm();
   let fileName = shortId.generate();
   let dbLength = Math.ceil(database.getDb().length / 10);
-  form.on('error', (err) => {
-    console.log(err);
-    return;
-  }).on('fileBegin', (name, file) => {
-    let memePath = `./public/memeStorage/${dbLength}/${fileName}`
-    fs.access(memePath, (err) => {
-      if (err) {
-        fs.mkdirSync(`./public/memeStorage/${dbLength}`);
-      }
-      file.path = memePath;
-    });
-  });
+  let fullPath = `./public/memeStorage/${dbLength}/${fileName}.jpg`;
+  form
+    .on('error', (err) => {
+      console.log(err);
+    })
+    .on('fileBegin', (name, file) => {
+      let memePath = `./public/memeStorage/${dbLength}`;
 
-  // form.parse(req, function(err, fields, files){
-  //   console.log(fields);
-  //   console.log(files);
-  // });
+      fs.access(memePath, err => {
+        if (err) {
+          fs.mkdirSync(memePath);
+        }
+      });
+      file.path = memePath + `/${fileName}.jpg`;
+    });
+
+  form.parse(req, function (err, fields, files) {
+    if (fields.memeDescription.length > 0 && fields.memeTitle.length > 0 && files.meme.size > 0) {
+      let id = shortId.generate();
+      let createMeme = memeGenerator(id, fields.memeTitle, fullPath, fields.memeDescription, fields.status);
+      database.add(createMeme);
+      database.save();
+      viewAddMemeSuccess(req, res);
+    } else {
+      viewAddMemeError(req, res);
+    }
+  });
 };
 
 let getDetails = (req, res) => {
@@ -82,8 +133,8 @@ let getDetails = (req, res) => {
                       <img src="${targetedMeme.memeSrc}" alt=""/>
                       <h3>Title  ${targetedMeme.title}</h3>
                       <p> ${targetedMeme.description}</p>
-                      <button><a href="${targetedMeme.posterSrc}">Download Meme</a></button>
-                    </div>`;
+                      <a href="${targetedMeme.memeSrc}" download><button>Download Meme</button></a>
+                    </div>`;    
 
     data = data.toString().replace('<div id="replaceMe">{{replaceMe}}</div>', memeHtml);
     res.write(data);
