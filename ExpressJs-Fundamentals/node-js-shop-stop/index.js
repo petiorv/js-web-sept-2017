@@ -1,5 +1,5 @@
 const http = require('http');
-const port = 3000;
+const port = 2525;
 const handlers = require('./handlers');
 
 http.createServer((req, res) => {

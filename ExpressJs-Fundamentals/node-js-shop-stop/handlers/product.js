@@ -9,6 +9,7 @@ const shortid = require('shortid');
 
 module.exports = (req, res) => {
     req.pathname = req.pathname || url.parse(req.url).pathname;
+    let product = {};
 
     if (req.pathname === '/product/add' && req.method === 'GET') {
         let filePath = path.normalize(path.join(__dirname, '../views/products/add.html'));
@@ -43,8 +44,8 @@ module.exports = (req, res) => {
                 });
 
                 part.on('end', () => {
-                    let filename = shortid.generate();
-                    let filePath = path.normalize(path.join(__dirname, `..${req.pathname}`));
+                    let fileName = shortid.generate();
+                    let filePath = `./content/images/${fileName}`;
 
                     product.image = filePath;
                     fs.write(`.${filePath}`, dataString, { encoding: 'ascii' }, (err) => {
@@ -55,7 +56,7 @@ module.exports = (req, res) => {
                     });
                 })
             } else {
-                part.setEncoding('utf-8');
+                part.setEncoding('utf8');
                 let field = '';
                 part.on('data', (data) => {
                     field += data;
@@ -68,7 +69,7 @@ module.exports = (req, res) => {
 
         form.on('close', () => {
             database.products.add(product);
-            res.writeHead(302, {
+            res.writeHead(200, {
                 Location: '/'
             });
 
