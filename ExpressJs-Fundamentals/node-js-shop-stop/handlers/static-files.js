@@ -2,13 +2,22 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-function getContentType(path) {
-    if (path.endsWith('css')) {
-        return 'text/css'
-    } else {
-        return 'image/x-icon'
+function getContentType(url){
+    let contentTypes = {
+        '.css': 'text/css',
+        '.html': 'text/html',
+        '.js': 'application/javascript',
+        '.ico': 'image/x-icon',
+        '.jpg': 'image/jpeg',
+        '.png': 'image/png',
+        '.bin': 'application/octet-stream'
     }
 
+    for (let type in contentTypes) {
+        if (url.endsWith(type)) {
+            return contentTypes[type];
+        }
+    }
 }
 
 module.exports = (req, res) => {

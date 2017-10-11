@@ -9,7 +9,7 @@ const shortid = require('shortid');
 
 module.exports = (req, res) => {
     req.pathname = req.pathname || url.parse(req.url).pathname;
-
+    let product = {};
     if (req.pathname === '/product/add' && req.method === 'GET') {
         let filePath = path.normalize(path.join(__dirname, '../views/products/add.html'));
         fs.readFile(filePath, (err, data) => {
@@ -31,7 +31,9 @@ module.exports = (req, res) => {
             res.end();
         })
     } else if (req.pathname === '/product/add' && req.method === 'POST') {
+
         let form = new multiparty.Form();
+        let product = {};
 
         form.on('part', (part) => {
             if (part.filename) {
@@ -43,9 +45,8 @@ module.exports = (req, res) => {
                 });
 
                 part.on('end', () => {
-                    let filename = shortid.generate();
-                    let filePath = path.normalize(path.join(__dirname, `..${req.pathname}`));
-
+                    let fileName = shortid.generate();
+                    let filePath = `/content/images/${fileName}.bin`
                     product.image = filePath;
                     fs.write(`.${filePath}`, dataString, { encoding: 'ascii' }, (err) => {
                         if (err) {
