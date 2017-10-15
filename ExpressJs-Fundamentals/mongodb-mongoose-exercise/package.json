@@ -1,0 +1,15 @@
+{
+  "name": "mongodb-mongoose-exercise",
+  "version": "1.0.0",
+  "description": "mongoose",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "PV",
+  "license": "MIT",
+  "dependencies": {
+    "formidable": "^1.1.1",
+    "mongoose": "^4.12.2"
+  }
+}

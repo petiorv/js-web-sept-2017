@@ -1,8 +1,7 @@
 const fs = require('fs');
-const path = require('path');
 const url = require('url');
 
-function getContentType(url){
+let getContentType = (url) => {
     let contentTypes = {
         '.css': 'text/css',
         '.html': 'text/html',
@@ -21,29 +20,30 @@ function getContentType(url){
 }
 
 module.exports = (req, res) => {
-    req.pathname = req.pathname || url.parse(req.url).pathname;
+    req.path = url.parse(req.url).pathname;
+    fs.readFile('.' + req.path, (err, data) => {
+        if (err || !req.path.startsWith('/content/')) {
+            console.log(err);
+            res.writeHead(404);
+            res.write('404 Page Not Found!');
+            res.end();
+            return;
+        }
 
-    if (req.pathname.startsWith('/content/') && req.method === 'GET') {
-        let filePath = path.normalize(path.join(__dirname, `..${req.pathname}`))
-
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                res.writeHead(404, {
-                    'Content-Type': 'text/plain'
-                })
-                res.write('Resource not found');
-                res.end();
-                return;
-            }
+        let path = req.path;
+        if (path.endsWith('.css') || path.endsWith('.html') || path.endsWith('.ico') ||
+            path.endsWith('.js') || path.endsWith('.png') || path.endsWith('.jpg') ||
+            path.endsWith('.bin')) {
 
             res.writeHead(200, {
-                'Content-Type': getContentType(req.pathname)
-            })
-
+                'Content-Type': getContentType(path)
+            });
             res.write(data);
             res.end();
-        })
-    } else {
-        return true;
-    }
+        } else {
+            res.writeHead(403);
+            res.write('Forbidden!');
+            res.end();
+        }
+    })
 }

@@ -1,19 +1,16 @@
 const http = require('http');
 const url = require('url');
-const port = 1334;
-let storage = require('./storage.js');
+const handlers = require('./handlers');
+const port =  2525;
 
-http.createServer((req, res) => {
-    storage.put('first', 'firstValue');
-    storage.put('second', 'secondValue');
-    storage.put('third', 'thirdValue');
-    storage.put('fouth', 'fourthValue');
-    storage.delete('second');
-    storage.update('first', 'updatedFirst');
-    storage.save();
-    storage.clear();
-    storage.load(() => {
-        console.log(storage.get('first'));
-        console.log(storage.getAll());
-    });
+http.createServer((req, res)=>{
+    req.pathname = req.pathname || url.parse(req.url).pathname;   
+    for (let handler of handlers){
+        let next = handler(req, res);
+        if (!next){
+            break;
+        }
+}
 }).listen(port);
+
+console.log(`Listening on ${port}...`);
