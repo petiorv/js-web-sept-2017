@@ -1,0 +1,12 @@
+<h1>Add New Genre</h1>
+<div class="container">
+    <form action="/addGenre" method="POST">
+        <label for="genreName">Genre</label>
+        <input type="text" id="genreName" name="genreName" placeholder="The name of the genre">
+
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{{#if isUploaded}}
+<div id="succssesBox" id="successMsg"><h2>Genre Added</h2></div>
+{{/if}}

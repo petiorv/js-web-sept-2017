@@ -1,0 +1,33 @@
+<h1>Add New Movie</h1>
+<div class="container">
+{{#if gotError}}
+<div id="errBox" id="errMsg"><h2>{{errorMsg}}</h2></div>
+{{/if}}
+{{#if isUploaded}}
+<div id="succssesBox" id="successMsg"><h2>Meme Added</h2></div>
+{{/if}}
+    <form action="/addMeme" method="POST" enctype="multipart/form-data">
+        <label for="movieTitle">Title</label>
+        <input type="text" id="movieTitle" name="memeTitle" placeholder="The title of the movie">
+
+        <select name="genreSelect" id="genreSelect">
+            <option value="-1">Please select...</option>
+            {{#each tags}}
+                <option value="{{this.genreName}}">{{this.genreName}}</option>
+            {{/each}}
+                
+            </select>
+
+
+        <label for="moviePoster">Poster URL</label>
+        <input type="file" id="moviePoster" name="meme" placeholder="Link to a poster">
+
+        <input type="checkbox" name="status" id="status" checked=""> public
+
+        <label for="movieDescription">Movie description</label>
+        <textarea id="movieDescription" name="memeDescription" placeholder="Movie description" rows="10" cols="10"></textarea>
+
+        <input type="submit" value="Submit">
+
+    </form>
+</div>
