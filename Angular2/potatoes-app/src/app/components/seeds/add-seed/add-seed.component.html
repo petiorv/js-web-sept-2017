@@ -1,3 +1,61 @@
-<p>
-  add-seed works!
-</p>
+<div class="addSeed">
+  <legend>
+    Add seed
+  </legend>
+  <div *ngIf="success" class="alert alert-success">
+    Successfully Added!
+  </div>
+  <div *ngIf="fail" class="alert alert-success">
+    Something went wrong!
+  </div>
+  <div class="row">
+    <form class="col-md-4" (ngSubmit)="addSeed()">
+      <div class="form-group">
+        <label for="title">Name</label>
+        <input type="text" class="form-control" id="title" required [(ngModel)]="model.name" name="name">
+      </div>
+      <div class="form-group">
+        <label for="title">Image URL</label>
+        <input type="text" class="form-control" id="title" required [(ngModel)]="model.imgUrl" name="imgUrl" #imgUrl="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="title">Price</label>
+        <input type="text" class="form-control" id="price" required [(ngModel)]="model.price" name="price" #price="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="title">Color Of Flower</label>
+        <input type="text" class="form-control" id="colorOfFlower" required [(ngModel)]="model.colorOfFlower" name="colorOfFlower"
+          #colorOfFlower="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="title">Growth Habit</label>
+        <input type="text" class="form-control" id="growthHabit" required [(ngModel)]="model.growthHabit" name="growthHabit" #growthHabit="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="title">Plant Type</label>
+        <input type="text" class="form-control" id="plantType" required [(ngModel)]="model.plantType" name="plantType" #plantType="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="title">Maturity</label>
+        <input type="text" class="form-control" id="maturity" required [(ngModel)]="model.maturity" name="maturity" #maturity="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="articleId">Related Article</label>
+        <br/>
+        <select [(ngModel)]="model.articleId" name="articleId" id="articleId" #articleId="ngModel" class="selectList">
+          <option *ngFor="let article of articles" value={{article._id}}>
+            {{article.title}}
+          </option>
+        </select>
+        <!-- <input type="text" class="form-control" id="title" required [(ngModel)]="model.articleId" name="articleId"
+          #articleId="ngModel"> -->
+      </div>
+      <button id="submit" name="submit" class="btn btn-primary">Add article</button>
+    </form>
+
+    <div class="col-md-4">
+      <label>Image Previewer</label>
+      <img src={{model.imgUrl}} class="img-responsive">
+    </div>
+  </div>
+</div>

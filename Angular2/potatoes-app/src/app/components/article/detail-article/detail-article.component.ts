@@ -12,7 +12,7 @@ import { AdminService } from '../../../core/services/admin/admin.service';
   templateUrl: './detail-article.component.html',
   styleUrls: ['./detail-article.component.css']
 })
-export class DetailtArticleComponent implements OnInit {
+export class DetailArticleComponent implements OnInit {
   model: ArticleModel;
   comment: AddCommentModel;
   comments: [CommentModel];
@@ -20,18 +20,21 @@ export class DetailtArticleComponent implements OnInit {
   isAdmin: boolean;
   success: boolean;
   fail: boolean;
+  forEdit: string;
+  loggedUser: string;
 
   constructor(private articleService: ArticlesService,
-              private activatedRoute: ActivatedRoute, 
-              private router: Router,
-              private commentService: CommentsService,
-              private adminService: AdminService
-            ) {
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private commentService: CommentsService,
+    private adminService: AdminService
+  ) {
     this.model = new ArticleModel("", "", "", "", "", "");
     this.comment = new AddCommentModel("", "", "", "");
   }
 
   ngOnInit() {
+    this.loggedUser = this.adminService.getLoggedUser();
     this.isAdmin = this.adminService.isAdmin();
     this.activatedRoute.params.subscribe((params: Params) => {
       this.articleService.detailsArticle(params['id']).subscribe(data => {
@@ -41,8 +44,9 @@ export class DetailtArticleComponent implements OnInit {
         this.model.description = data.description;
         this.model.date = data.date;
         this.model.author = data.author;
-        this.commentService.getComments(this.model._id).subscribe(data =>{
+        this.commentService.getComments(this.model._id).subscribe(data => {
           this.comments = data;
+          console.log(this.comments);
         })
       })
     });
@@ -61,29 +65,46 @@ export class DetailtArticleComponent implements OnInit {
       })
   }
 
-  addComment(){
+  deleteComment(id){
+    this.commentService.deleteComment(id, localStorage.getItem('authtoken')).subscribe(data =>{
+      this.commentService.getComments(this.model._id).subscribe(data =>{
+        this.comments = data;
+      })
+    })
+  }
+
+  editComment(id) {
+    this.forEdit = id;
+  }
+
+  saveComment(id, newContent) {
+    this.commentService.getCurrentComment(id).subscribe(data => {
+      this.comment = data;
+      this.comment.content = newContent;
+      this.commentService.updateComment(id, this.comment, localStorage.getItem('authtoken')).subscribe(data => {
+        this.commentService.getComments(this.model._id).subscribe(data => {
+          this.comments = data;
+          this.forEdit = '';
+        })
+      })
+    }, err => {
+
+    });
+  }
+
+  addComment() {
     let d = new Date();
     let strDate = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
     this.comment.articleId = this.model._id;
     this.comment.author = localStorage.getItem('username');
     this.comment.date = strDate;
-    this.commentService.addComment(this.comment).subscribe(data =>{
+    this.commentService.addComment(this.comment).subscribe(data => {
       this.comment = new AddCommentModel("", "", "", "");
-      this.commentService.getComments(this.model._id).subscribe(data =>{
+      this.commentService.getComments(this.model._id).subscribe(data => {
         this.comments = data;
       })
     })
-    console.log(this.comment.content)
-
   }
 
 }
 
-export class DetailArticleComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}

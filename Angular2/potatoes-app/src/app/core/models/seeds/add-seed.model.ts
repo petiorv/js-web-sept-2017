@@ -1,6 +1,5 @@
-export class SeedModel {
+export class AddSeedModel {
     constructor(
-        public _id: string,
         public imgUrl: string,
         public name: string,
         public price: string,

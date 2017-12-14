@@ -40,7 +40,10 @@ export class ArticlesComponent implements OnInit {
   }
 
   editArticle(_id) {
-    this.router.navigate(['articles/details/' + _id]);
+    this.router.navigate(['articles/edit/' + _id]);
   }
 
+  detailsArticle(_id) {
+    this.router.navigate(['articles/details/' + _id]);
+  }
 }

@@ -23,6 +23,11 @@ import { AddSeedComponent } from './components/seeds/add-seed/add-seed.component
 import { EditSeedComponent } from './components/seeds/edit-seed/edit-seed.component';
 import { DetailSeedComponent } from './components/seeds/detail-seed/detail-seed.component';
 import { SeedsComponent } from './components/seeds/seeds/seeds.component';
+import { DetailArticleComponent } from './components/article/detail-article/detail-article.component';
+import { SeedService } from './core/services/seeds/seed.service';
+import { ErrorComponent } from './components/error/error.component';
+import { AuthGuard } from './guards/auth.guard.service.guard';
+import { ValidationService } from './core/services/validation/validation.service';
 
 
 
@@ -35,11 +40,13 @@ import { SeedsComponent } from './components/seeds/seeds/seeds.component';
     ArticlesComponent,
     AddArticleComponent,
     EditArticleComponent,
+    DetailArticleComponent,
     CustomizeComponent,
     AddSeedComponent,
     EditSeedComponent,
     DetailSeedComponent,
-    SeedsComponent
+    SeedsComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +56,7 @@ import { SeedsComponent } from './components/seeds/seeds/seeds.component';
     FormsModule,                               
     ReactiveFormsModule                     
   ],
-  providers: [ArticlesService, CommentsService, AdminService, CustomizeService],
+  providers: [ArticlesService, CommentsService, AdminService, CustomizeService, SeedService, AuthGuard, ValidationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

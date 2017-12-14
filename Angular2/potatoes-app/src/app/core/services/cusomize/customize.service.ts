@@ -16,19 +16,34 @@ export class CustomizeService {
 
     constructor(private http: HttpClient) {
     }
-
-    getImages(): Observable<any> {
+    
+    getAll(): Observable<any> {
         return this.http.get(`${host}/${appKey}/customize`, {
-            headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`${localStorage.getItem('username')}:${localStorage.getItem('pass')}`))
+            headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`guest:guest`))
+                .set('Content-Type', 'application/json')
+        });
+    }
+
+    getHome(): Observable<any> {
+        return this.http.get(`${host}/${appKey}/customize?query={"page":"home"}`, {
+            headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`guest:guest`))
+                .set('Content-Type', 'application/json')
+        });
+    }
+
+    getSeeds(): Observable<any> {
+        return this.http.get(`${host}/${appKey}/customize?query={"page":"seeds"}`, {
+            headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`guest:guest`))
                 .set('Content-Type', 'application/json')
         });
     }
 
 
     UpdateImages(id, obj, authtoken): Observable<any> {
-        return this.http.put(`${host}/${appKey}/articles/` + id, JSON.stringify(obj), {
+        return this.http.put(`${host}/${appKey}/customize/` + id, JSON.stringify(obj), {
             headers: new HttpHeaders().set('Authorization', 'Kinvey ' + authtoken)
                 .set('Content-Type', 'application/json')
         });
     }
+
 }

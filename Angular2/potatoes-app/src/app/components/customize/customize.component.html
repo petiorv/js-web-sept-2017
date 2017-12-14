@@ -1,34 +1,37 @@
-<!-- <div class="customize">
-  <div col-md-12>
-      <div *ngFor="let item of pages">
-        <p>{{item.page}}page</p>
-        <img src="{{item.imgUrl}}" alt="{{item.page}}" class="imagePreviewer">
-        <input value={{item.imgUrl}}>
-      </div>
-  </div>
-</div> -->
-
 <div class="customize">
   <div class="row">
     <fieldset>
       <legend>Change images</legend>
+      <div *ngIf="isUpdated" class="alert alert-success">
+        Successfully updated!
+      </div>
+
+      <div *ngIf="fail" class="alert alert-danger">
+        Something went wrong!
+      </div>
       <div class="col-md-6">
         <h2>Homepage</h2>
-        <form class="form-horizontal" (ngSubmit)="update()">
+        <form class="form-horizontal" (ngSubmit)="updateHomePage()">
           <img src={{homepage.imgUrl}} class="img-responsive">
           <hr/>
-          <input [(ngModel)]="homepage.imgUrl" name="imgUrl" class="col-md-6">
-          <button tid="submit" name="submit">Update</button>
+          <textarea [(ngModel)]="homepage.text" name="text" class="form-control input-md" rows="3"> </textarea>
+          <hr/>
+          <input [(ngModel)]="homepage.imgUrl" name="imgUrl" class="form-control input-md">
+          <br/>
+          <button id="submit" name="submit">Update</button>
         </form>
       </div>
 
       <div class="col-md-6">
         <h2>Seeds page</h2>
-        <form class="form-horizontal" (ngSubmit)="update()">
+        <form class="form-horizontal" (ngSubmit)="updateSeedsPage()">
           <img src={{seedspage.imgUrl}} class="img-responsive">
           <hr/>
-          <input [(ngModel)]="seedspage.imgUrl" name="imgUrl" class="col-md-6">
-          <button tid="submit" name="submit">Update</button>
+          <textarea [(ngModel)]="seedspage.text" name="text" class="form-control input-md" rows="3"> </textarea>
+          <hr/>
+          <input [(ngModel)]="seedspage.imgUrl" name="imgUrl" class="form-control input-md">
+          <br/>
+          <button id="submit" name="submit">Update</button>
         </form>
       </div>
     </fieldset>

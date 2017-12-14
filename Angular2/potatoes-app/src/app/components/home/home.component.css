@@ -1,8 +1,44 @@
 .body-container {
-    margin-top: 80px;
+    margin-top: 40px;
     margin-bottom: 60px;
 }
 .home-img{
     margin-top: 50px;
-    background-image: url("https://i.ytimg.com/vi/Qohg49oFqoo/maxresdefault.jpg");
 }
+
+/* .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+div.centered {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 30px;
+    background-color: #ffffff;   
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+  }
+  
+  div.centered p {
+    margin: 5%;
+    font-weight: bold;
+    color: #000000;
+  }
+
+
+.headerImg{
+    height: 400px;
+    width: 100%;
+}
+
+.wide {
+    width:100%;
+    height:400px;
+    overflow: hidden;
+    background-size:cover;
+  }

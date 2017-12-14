@@ -1,7 +1,6 @@
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
-// import { ArticleModel } from '../models/aritcles/article.model';
 
 const appKey = "kid_ByMVMM2bf" // APP KEY HERE;
 const appSecret = "28cf5abf78ff4d69832eba56cfa47491" // APP SECRET HERE;
@@ -33,13 +32,21 @@ export class CommentsService {
   }
 
   deleteComment(id, authtoken): Observable<any> {
-    return this.http.delete(`${host}/${appKey}/articles/${id}`, {
+    return this.http.delete(`${host}/${appKey}/comments/${id}`, {
       headers: new HttpHeaders().set('Authorization', 'Kinvey ' + authtoken)
     });
   }
 
+  getCurrentComment(id): Observable<any> {
+    return this.http.get(`${host}/${appKey}/comments/${id}`, {
+        headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(`guest:guest`))
+          .set('Content-Type', 'application/json')
+      });
+  }
+
   updateComment(id, obj, authtoken): Observable<any> {
-    return this.http.put(`${host}/${appKey}/articles/` + id, JSON.stringify(obj), {
+    console.log(obj)
+    return this.http.put(`${host}/${appKey}/comments/` + id, JSON.stringify(obj), {
       headers: new HttpHeaders().set('Authorization', 'Kinvey ' + authtoken)
         .set('Content-Type', 'application/json')
     });

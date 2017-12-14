@@ -10,23 +10,46 @@ import { CustomizeService } from '../../core/services/cusomize/customize.service
 export class CustomizeComponent implements OnInit {
   homepage: CustomizeModel;
   seedspage: CustomizeModel;
-  constructor(private custimizeService: CustomizeService) { 
-    this.homepage = new CustomizeModel("5a318957e0f4037c9ec08d77","home","")
-    this.seedspage = new CustomizeModel("5a3189a0b5d7a6494dcb3d10","seeds","")
+  isUpdated: boolean;
+  fail: boolean;
+
+  constructor(private custimizeService: CustomizeService) {
+    this.homepage = new CustomizeModel("5a318957e0f4037c9ec08d77", "", "", "")
+    this.seedspage = new CustomizeModel("5a3189a0b5d7a6494dcb3d10", "", "", "")
   }
 
   ngOnInit() {
-    this.custimizeService.getImages().subscribe(data => {      
-      this.homepage.imgUrl = data[0].imgUrl;
-      this.seedspage.imgUrl = data[1].imgUrl
+    this.custimizeService.getAll().subscribe(data => {
+      for (let page of data) {
+        if (page._id === this.homepage._id) {
+          this.homepage = page;
+        }
+        if (page._id === this.seedspage._id) {
+          this.seedspage = page;
+        }
+      }
     },
       err => {
-        console.log(err)
-      })
+        this.fail = true;
+      });
   }
 
-  update(){
-    console.log('wwww')
+  updateHomePage() {
+    this.custimizeService.UpdateImages(this.homepage._id, this.homepage, localStorage.getItem('authtoken')).subscribe(data => {
+      this.homepage = data;
+      this.isUpdated = true;
+    }, err => {
+      this.fail = true;
+    })
+  }
+
+  updateSeedsPage() {
+    this.custimizeService.UpdateImages(this.seedspage._id, this.seedspage, localStorage.getItem('authtoken')).subscribe(data => {
+      this.seedspage = data;
+      this.isUpdated = true;
+    }, err => {
+      this.fail = true;
+    })
   }
 
 }

@@ -1,3 +1,55 @@
-<p>
-  seeds works!
-</p>
+<div class="wide">
+    <img src="{{seedsPage.imgUrl}}" alt="Homepage" class="img-responsive">
+    <div class="centered">
+        <h1>{{seedsPage.text}}</h1>        
+    </div>
+</div>
+<div class="seeds">
+  <legend>
+    Catalog of Seeds
+  </legend>
+  <div *ngIf="deleted" class="alert alert-success">
+    Successfully deleted!
+  </div>
+  <div *ngFor="let seed of seeds" class="row">
+    <div>
+      <div class="row">
+        <div class="col-md-7">
+          <a href="#">
+            <img class="img-fluid rounded mb-3 mb-md-0" src="{{seed.imgUrl}}" alt="">
+          </a>
+        </div>
+        <div class="col-md-5">
+          <h2>{{seed.name}}</h2>
+          <table class="table">
+            <tr>
+              <td>Maturity</td>
+              <td>{{seed.maturity}}</td>
+            </tr>
+            <tr>
+              <td>Plant type</td>
+              <td>{{seed.plantType}}</td>
+            </tr>
+            <tr>
+              <td>Growth habit</td>
+              <td>{{seed.growthHabit}}</td>
+            </tr>
+            <tr>
+              <td>Color of flower</td>
+              <td>{{seed.colorOfFlower}}</td>
+            </tr>
+          </table>
+          <button class="btn btn-primary" (click)="related(seed.articleId)">Related article</button>
+          <hr/>
+          <div *ngIf="isAdmin">
+            <button (click)="editSeed(seed._id)" class="btn btn-primary" href="#">Edit</button>
+            <button (click)="deleteSeed(seed._id)" class="btn btn-primary" href="#">Delete</button>
+          </div>
+
+        </div>
+      </div>
+      <hr/>
+    </div>
+
+  </div>
+</div>

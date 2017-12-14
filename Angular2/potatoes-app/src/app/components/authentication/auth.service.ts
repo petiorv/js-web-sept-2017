@@ -43,8 +43,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    return this.http.post(logoutUrl,
-      {},
+    return this.http.post(logoutUrl, {},
       {
         headers: this.createAuthHeaders('Kinvey')
       }

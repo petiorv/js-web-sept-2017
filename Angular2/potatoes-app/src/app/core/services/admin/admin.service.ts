@@ -14,4 +14,8 @@ export class AdminService {
             return false;
         }
     }
+
+    getLoggedUser(){
+        return localStorage.getItem('username');
+    }
 }
