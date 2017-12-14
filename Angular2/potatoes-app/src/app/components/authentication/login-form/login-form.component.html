@@ -1,0 +1,32 @@
+<div class="login">
+  <form class="form-horizontal" (ngSubmit)="login()" #loginForm="ngForm">
+    <fieldset>
+      <legend>Login</legend>
+      <div class="col-md-12">
+        <div *ngIf="loginFail" class="alert alert-danger">
+          Failed Login!
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="username">Username</label>
+          <div class="col-md-4">
+            <input id="username" type="text" placeholder="username" class="form-control input-md" required [(ngModel)]="model.username"
+              name="username" #username="ngModel">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="password">Password</label>
+          <div class="col-md-4">
+            <input id="password" type="password" placeholder="password" class="form-control input-md" required [(ngModel)]="model.password"
+              name="password" #username="ngModel">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="submit"></label>
+          <div class="col-md-4">
+            <button id="submit" name="submit" class="btn btn-primary">Login</button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

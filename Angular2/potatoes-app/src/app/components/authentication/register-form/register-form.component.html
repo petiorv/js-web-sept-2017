@@ -1,0 +1,59 @@
+<div class="register">
+
+  <form class="form-horizontal" (ngSubmit)="submitRegister()" #registerForm="ngForm">
+    <fieldset>
+      <legend>Register</legend>
+      <div class="col-md-12">
+        <div *ngIf="registerFail" class="alert alert-danger">
+          {{errorMsg}}
+        </div>
+        <div *ngIf="registerSuccess" class="alert alert-success">
+          Successfull Registered {{registeredUser}}!
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="username">Username</label>
+          <div class="col-md-4">
+            <input id="username" type="text" placeholder="username" class="form-control input-md" required [(ngModel)]="model.username"
+              name="username" #username="ngModel">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="fn">First name</label>
+          <div class="col-md-4">
+            <input id="fn" name="fn" type="text" placeholder="first name" class="form-control input-md" [(ngModel)]="model.firstName">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="ln">Last name</label>
+          <div class="col-md-4">
+            <input id="ln" name="ln" type="text" placeholder="last name" class="form-control input-md" [(ngModel)]="model.lastName">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="ln">Password</label>
+          <div class="col-md-4">
+            <input id="ln" name="ln" type="password" placeholder="password" class="form-control input-md" [(ngModel)]="model.password">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="ln">Confirm Password</label>
+          <div class="col-md-4">
+            <input id="ln" name="ln" type="password" placeholder="confirm password" class="form-control input-md" [(ngModel)]="model.confirm">
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="submit"></label>
+          <div class="col-md-4">
+            <button id="submit" name="submit" class="btn btn-primary">Register</button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+</div>

@@ -1,0 +1,45 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" (click)="toggleState()">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">Patatoes</a>
+    </div>
+    <div class="collapse navbar-collapse" [ngClass]="{ 'in': isIn }">
+      <ul class="nav navbar-nav">
+        <li>
+          <a routerLink="">Home</a>
+        </li>
+        <!-- <li><a routerLink="/articles">Articles</a></li> -->
+        <li>
+          <a routerLink="/addArticle">Add Article</a>
+        </li>
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li *ngIf="IsUserLoggedIn">
+          <a routerLink="/customize">
+            <span class="glyphicon glyphicon-picture"></span>Customize</a>
+        </li>
+        <li *ngIf="!IsUserLoggedIn">
+          <a routerLink="/register">
+            <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+        </li>
+        <li *ngIf="!IsUserLoggedIn">
+          <a routerLink="/login">
+            <span class="glyphicon glyphicon-log-in"></span> Login</a>
+        </li>
+        <li *ngIf="IsUserLoggedIn">
+          <a>Wellcome {{username}}</a>
+        </li>
+        <li *ngIf="IsUserLoggedIn">
+          <a routerLink="/logout" (click)="logOut()">Log Out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
