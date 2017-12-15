@@ -38,7 +38,12 @@
               <td>Color of flower</td>
               <td>{{seed.colorOfFlower}}</td>
             </tr>
+            <tr>
+              <td>Price per kg</td>
+              <td>{{seed.price}}$</td>
+            </tr>
           </table>
+          <hr/>
           <button class="btn btn-primary" (click)="related(seed.articleId)">Related article</button>
           <hr/>
           <div *ngIf="isAdmin">

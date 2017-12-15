@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs';
@@ -15,7 +15,8 @@ const logoutUrl = `https://baas.kinvey.com/user/${appKey}/_logout`;
 
 @Injectable()
 export class AuthenticationService {
-  public IsUserLoggedIn: Subject<boolean> = new Subject<boolean>();
+  @Output() isUserLogged: EventEmitter<any> = new EventEmitter();
+  @Output() isAdmin: EventEmitter<any> = new EventEmitter();
   private currentAuthtoken : string;
 
   constructor(
@@ -75,14 +76,6 @@ export class AuthenticationService {
         'Authorization': `Kinvey ${localStorage.getItem('authtoken')}`,
         'Content-Type': 'application/json'
       })
-    }
-  }
-
-  isGuestUser(){
-    if(localStorage.getItem('username') === 'guest'){
-      return true;
-    } else{
-      return false;
     }
   }
 

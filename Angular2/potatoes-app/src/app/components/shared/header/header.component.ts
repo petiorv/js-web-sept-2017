@@ -12,22 +12,22 @@ export class HeaderComponent implements OnInit {
 
   username = localStorage.getItem('username');
   guest: boolean;
-  IsUserLoggedIn = false;
+  IsUserLoggedIn: boolean;
   isAdmin: boolean;
 
 
   constructor(private authService: AuthenticationService, private adminService: AdminService) {
     this.username = localStorage.getItem('username');
     this.isAdmin = this.adminService.isAdmin();
+    this.authService.isUserLogged.subscribe(isLogged => this.IsUserLoggedIn = isLogged)
+    this.authService.isAdmin.subscribe(isAdmin => this.isAdmin = isAdmin)
   }
 
   ngOnInit() {
+    console.log(this.isAdmin)
     this.isAdmin = this.adminService.isAdmin();
     this.username = localStorage.getItem('username');
-    this.authService.IsUserLoggedIn.subscribe(value => {
-      this.changeUser();
-      this.IsUserLoggedIn = value;
-    });
+    this.IsUserLoggedIn = this.adminService.isUserLogged();
   }
 
   toggleState() {
@@ -35,8 +35,4 @@ export class HeaderComponent implements OnInit {
     this.isIn = bool === false ? true : false;
   }
 
-  changeUser() {
-    this.username = localStorage.getItem('username')
-    this.guest = this.authService.isGuestUser();
-  }
 }

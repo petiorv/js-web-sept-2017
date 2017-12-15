@@ -53,7 +53,13 @@ export class LoginFormComponent {
     localStorage.setItem('username', data['username']);
     localStorage.setItem('pass', data['confirm']);
     this.loginFail = false;
+    if (localStorage.getItem('username') == 'petio') {
+      this.authService.isAdmin.emit(true);
+    } else {
+      this.authService.isAdmin.emit(false);
+    }
+
+    this.authService.isUserLogged.emit(true)
     this.router.navigate(['/home']);
-    this.authService.IsUserLoggedIn.next(true);
   }
 }

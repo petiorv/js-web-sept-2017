@@ -16,10 +16,15 @@ export class LogoutComponent implements OnInit {
     this.authService.logout()
       .subscribe(data => {
         localStorage.clear();
+        this.authService.isUserLogged.emit(false);
+        this.authService.isAdmin.emit(false);
         this.router.navigate(['/login']);
       },
       err => {
-        console.log(err)
+        localStorage.clear();
+        this.authService.isUserLogged.emit(false);
+        this.authService.isAdmin.emit(false);
+        this.router.navigate(['/login']);
       })
   }
 }

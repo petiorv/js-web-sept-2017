@@ -15,6 +15,14 @@ export class AdminService {
         }
     }
 
+    isUserLogged(){
+        if(localStorage.length == 0){
+            return false;
+        } else { 
+            return true;
+        }
+    }
+
     getLoggedUser(){
         return localStorage.getItem('username');
     }
