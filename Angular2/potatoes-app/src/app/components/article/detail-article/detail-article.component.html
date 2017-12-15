@@ -26,7 +26,10 @@
           <hr>
 
           <!-- Comments Form -->
-          <div class="card my-4">
+          <div *ngIf="isLogged" class="card my-4">
+              <div *ngIf="!checker" class="alert alert-danger">
+                  Comment should be atleast one symbol
+                </div>
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
               <form (ngSubmit)="addComment()">

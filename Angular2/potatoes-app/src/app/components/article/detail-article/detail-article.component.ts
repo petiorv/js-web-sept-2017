@@ -7,6 +7,7 @@ import { CommentModel } from '../../../core/models/comment/comment.model';
 import { CommentsService } from '../../../core/services/comments/comments.service';
 import { AdminService } from '../../../core/services/admin/admin.service';
 import { ValidationService } from '../../../core/services/validation/validation.service';
+import { AuthenticationService } from '../../authentication/auth.service';
 
 @Component({
   selector: 'potatoes-detail-article',
@@ -26,18 +27,21 @@ export class DetailArticleComponent implements OnInit {
   checker: boolean;
   updateComment: boolean;
   currentError: string;
+  isLogged: boolean;
 
   constructor(private articleService: ArticlesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private commentService: CommentsService,
     private adminService: AdminService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private authService: AuthenticationService
   ) {
     this.model = new ArticleModel("", "", "", "", "", "");
     this.comment = new AddCommentModel("", "", "", "");
     this.checker = true;
     this.updateComment = true;
+    this.isLogged = this.adminService.isUserLogged();
   }
 
   ngOnInit() {
@@ -125,6 +129,8 @@ export class DetailArticleComponent implements OnInit {
         this.commentService.getComments(this.model._id).subscribe(data => {
           this.comments = data;
         })
+      }, err => {
+        this.router.navigate(['/login'])
       })
     }
     setTimeout(() => {
