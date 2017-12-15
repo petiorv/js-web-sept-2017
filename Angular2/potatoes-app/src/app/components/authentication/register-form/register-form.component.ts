@@ -19,6 +19,7 @@ export class RegisterFormComponent implements OnInit {
 
   constructor(private authService: AuthenticationService, private router: Router, private validationService: ValidationService) {
     this.model = new RegisterModel("", "", "", "", "");
+    this.checker = true;
   }
 
   ngOnInit() {
@@ -32,25 +33,25 @@ export class RegisterFormComponent implements OnInit {
     }
 
     this.checker = this.validationService.validateObj(this.model);
-    console.log(this.checker)
-    // if (this.checker) {
-    //   this.authService.register(this.model)
-    //     .subscribe(
-    //     data => {
-    //       this.successfulRegister(data);
-    //       setTimeout(() => {
-    //         this.router.navigate(['login'])
-    //       }, 3000);
-    //     },
-    //     err => {
-    //       this.registerFail = true;
-    //       this.errorMsg = "User already exist";
-    //     })
-    // }
 
-  }
+    if (this.checker) {
+      this.authService.register(this.model)
+        .subscribe(
+        data => {
+          this.successfulRegister(data);
+          setTimeout(() => {
+            this.router.navigate(['login'])
+          }, 3000);
+        },
+        err => {
+          this.registerFail = true;
+          this.errorMsg = "User already exist";
+        })
+    }
 
-  checkPassword() {
+    setTimeout(() => {
+      this.checker = true;
+    }, 3000)
 
   }
 

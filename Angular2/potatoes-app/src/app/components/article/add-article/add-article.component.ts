@@ -4,6 +4,7 @@ import { ArticlesService } from '../../../core/services/article/article.service'
 import { ArticleModel } from '../../../core/models/aritcles/article.model';
 import { AdminService } from '../../../core/services/admin/admin.service';
 import { Router, ActivatedRoute, Params } from "@angular/router";
+import { ValidationService } from '../../../core/services/validation/validation.service';
 
 
 @Component({
@@ -12,13 +13,14 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
   styleUrls: ['./add-article.component.css']
 })
 export class AddArticleComponent implements OnInit {
-
+  checker: boolean;
   isAdmin: boolean;
   model: AddArticleModel;
   articles: [ArticleModel]
 
-  constructor(private articleService: ArticlesService, private adminService : AdminService, private router: Router) {
-    this.model = new AddArticleModel("", "", "", "");
+  constructor(private articleService: ArticlesService, private adminService: AdminService, private router: Router, private validationService: ValidationService) {
+    this.model = new AddArticleModel("", "", "", "", "");
+    this.checker = true;
   }
 
   ngOnInit() {
@@ -40,18 +42,22 @@ export class AddArticleComponent implements OnInit {
     let strDate = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
     this.model.author = localStorage.getItem('username');
     this.model.date = strDate;
-    this.articleService.addArticle(this.model).subscribe(data => {
-      this.model = new AddArticleModel("", "", "", "");
-      this.articleService.getArticles().subscribe(data =>{
-        this.articles = data;
-      });
-      
-    },
-      err => {
-        console.log(err)
-      })
+    this.checker = this.validationService.validateObj(this.model);
+    if (this.checker) {
+      this.articleService.addArticle(this.model).subscribe(data => {
+        this.model = new AddArticleModel("", "", "", "", "");
+        this.articleService.getArticles().subscribe(data => {
+          this.articles = data;
+        });
+
+      },
+        err => {
+          console.log(err)
+        })
+    }
+    
+    setTimeout(()=>{
+      this.checker = true;
+    }, 3000)
   }
-
-
-
 }

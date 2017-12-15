@@ -1,5 +1,8 @@
 <div class="container body-container">
   <div class="row">
+    <div *ngIf="!checker" class="alert alert-danger">
+      All fields are required
+    </div>
     <form class="col-md-4" (ngSubmit)="addArticle()">
       <div class="form-group">
         <label for="title">Title</label>
@@ -17,6 +20,10 @@
       </div>
       <button id="submit" name="submit" class="btn btn-primary">Add article</button>
     </form>
+    <div class="col-md-4">
+        <label>Image Previewer</label>
+        <img src={{model.imgUrl}} class="img-responsive">
+      </div>
   </div>
   <br/>
   <legend>List of articles</legend>

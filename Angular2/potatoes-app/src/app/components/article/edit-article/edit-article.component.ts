@@ -6,6 +6,7 @@ import { AddCommentModel } from '../../../core/models/comment/Addcomment.model';
 import { CommentModel } from '../../../core/models/comment/comment.model';
 import { CommentsService } from '../../../core/services/comments/comments.service';
 import { AdminService } from '../../../core/services/admin/admin.service';
+import { ValidationService } from '../../../core/services/validation/validation.service';
 
 @Component({
   selector: 'potatoes-edit-article',
@@ -20,15 +21,18 @@ export class EditArticleComponent implements OnInit {
   isAdmin: boolean;
   success: boolean;
   fail: boolean;
+  checker: boolean;
 
   constructor(private articleService: ArticlesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private commentService: CommentsService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private validationService: ValidationService
   ) {
     this.model = new ArticleModel("", "", "", "", "", "");
     this.comment = new AddCommentModel("", "", "", "");
+    this.checker = true;
   }
 
   ngOnInit() {
@@ -44,23 +48,30 @@ export class EditArticleComponent implements OnInit {
         this.commentService.getComments(this.model._id).subscribe(data => {
           this.comments = data;
         }, err => {
-              console.log(err)
+          console.log(err)
         })
       })
     });
   }
 
   updateArticle() {
-    let authtoken = localStorage.getItem('authtoken');
-    this.articleService.updateArticle(this.model._id, this.model, authtoken).subscribe(data => {
-      this.success = true;
-      setTimeout(() => {
-        this.router.navigate(['articles'])
-      }, 3000);
-    },
-      err => {
-        this.fail = true;
-      })
+    this.checker = this.validationService.validateObj(this.model);
+    if (this.checker) {
+      let authtoken = localStorage.getItem('authtoken');
+      this.articleService.updateArticle(this.model._id, this.model, authtoken).subscribe(data => {
+        this.success = true;
+        setTimeout(() => {
+          this.router.navigate(['articles'])
+        }, 3000);
+      },
+        err => {
+          this.fail = true;
+        })
+    }
+    setTimeout(() => {
+      this.checker = true;
+    }, 3000)
+
   }
 
   addComment() {

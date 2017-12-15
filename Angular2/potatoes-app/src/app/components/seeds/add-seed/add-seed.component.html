@@ -8,6 +8,9 @@
   <div *ngIf="fail" class="alert alert-success">
     Something went wrong!
   </div>
+  <div *ngIf="!checker" class="alert alert-danger">
+      All fields are required
+    </div>
   <div class="row">
     <form class="col-md-4" (ngSubmit)="addSeed()">
       <div class="form-group">

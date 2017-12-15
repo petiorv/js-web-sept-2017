@@ -14,18 +14,18 @@
         <li>
           <a routerLink="">Home</a>
         </li>
-        <li>
+        <li *ngIf="isAdmin">
           <a routerLink="/addArticle">Add Article</a>
         </li>
+        <li *ngIf="isAdmin">
+          <a routerLink="/addSeed">Add Seed</a>
+        </li>
         <li>
-            <a routerLink="/addSeed">Add Seed</a>
-          </li>
-          <li>
-              <a routerLink="/seeds">Seeds Catalog</a>
-            </li>
+          <a routerLink="/seeds">Seeds Catalog</a>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="IsUserLoggedIn">
+        <li *ngIf="isAdmin">
           <a routerLink="/customize">
             <span class="glyphicon glyphicon-picture"></span>Customize</a>
         </li>

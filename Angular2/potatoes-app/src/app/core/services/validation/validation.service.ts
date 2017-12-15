@@ -7,16 +7,19 @@ export class ValidationService {
     constructor() {
     }
 
-    validateObj(obj){
-        Object.keys(obj).map((k, v)=>{
-            
-            if(obj[k].length == 0){
-                console.log('false')
-                return false;
+    validateObj(obj) {
+        let cnt: number = 0;
+        Object.keys(obj).map((k, v) => {
+
+            if (obj[k].length == 0) {
+                cnt++;
             }
-          })
-          return true;
+        })
+        if (cnt !== 0) {
+            return false;
+        }
+        return true;
     }
 
-   
+
 }

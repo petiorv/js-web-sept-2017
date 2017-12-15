@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { AuthenticationService } from '../../authentication/auth.service';
+import { AdminService } from '../../../core/services/admin/admin.service';
 
 @Component({
   selector: 'potatoes-header',
@@ -12,14 +13,16 @@ export class HeaderComponent implements OnInit {
   username = localStorage.getItem('username');
   guest: boolean;
   IsUserLoggedIn = false;
+  isAdmin: boolean;
 
 
-  constructor(private authService: AuthenticationService) {
+  constructor(private authService: AuthenticationService, private adminService: AdminService) {
     this.username = localStorage.getItem('username');
-   
+    this.isAdmin = this.adminService.isAdmin();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
+    this.isAdmin = this.adminService.isAdmin();
     this.username = localStorage.getItem('username');
     this.authService.IsUserLoggedIn.subscribe(value => {
       this.changeUser();

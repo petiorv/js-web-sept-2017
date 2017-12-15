@@ -4,6 +4,9 @@
     <fieldset>
       <legend>Register</legend>
       <div class="col-md-12">
+          <div *ngIf="!checker" class="alert alert-danger">
+              All fields are required
+            </div>
         <div *ngIf="registerFail" class="alert alert-danger">
           {{errorMsg}}
         </div>

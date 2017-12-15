@@ -55,6 +55,10 @@
                   </form>
                 </div>
               </div>
+              <hr/>
+              <div *ngIf="!updateComment && currentError == comment._id" class="alert alert-danger">
+                  Comment should be atleast one symbol
+                </div>
               <button *ngIf="loggedUser == comment.author || isAdmin" class="btn btn-primary" (click)="deleteComment(comment._id)">delete</button>
               <button  *ngIf="loggedUser == comment.author || isAdmin" class="btn btn-primary" (click)="editComment(comment._id)">edit</button>
             

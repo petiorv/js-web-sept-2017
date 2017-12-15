@@ -6,6 +6,7 @@ import { AddCommentModel } from '../../../core/models/comment/Addcomment.model';
 import { CommentModel } from '../../../core/models/comment/comment.model';
 import { CommentsService } from '../../../core/services/comments/comments.service';
 import { AdminService } from '../../../core/services/admin/admin.service';
+import { ValidationService } from '../../../core/services/validation/validation.service';
 
 @Component({
   selector: 'potatoes-detail-article',
@@ -22,15 +23,21 @@ export class DetailArticleComponent implements OnInit {
   fail: boolean;
   forEdit: string;
   loggedUser: string;
+  checker: boolean;
+  updateComment: boolean;
+  currentError: string;
 
   constructor(private articleService: ArticlesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private commentService: CommentsService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private validationService: ValidationService
   ) {
     this.model = new ArticleModel("", "", "", "", "", "");
     this.comment = new AddCommentModel("", "", "", "");
+    this.checker = true;
+    this.updateComment = true;
   }
 
   ngOnInit() {
@@ -65,9 +72,9 @@ export class DetailArticleComponent implements OnInit {
       })
   }
 
-  deleteComment(id){
-    this.commentService.deleteComment(id, localStorage.getItem('authtoken')).subscribe(data =>{
-      this.commentService.getComments(this.model._id).subscribe(data =>{
+  deleteComment(id) {
+    this.commentService.deleteComment(id, localStorage.getItem('authtoken')).subscribe(data => {
+      this.commentService.getComments(this.model._id).subscribe(data => {
         this.comments = data;
       })
     })
@@ -78,18 +85,30 @@ export class DetailArticleComponent implements OnInit {
   }
 
   saveComment(id, newContent) {
+    this.updateComment = this.validationService.validateObj(this.comment)
+    this.currentError = id;
     this.commentService.getCurrentComment(id).subscribe(data => {
       this.comment = data;
       this.comment.content = newContent;
-      this.commentService.updateComment(id, this.comment, localStorage.getItem('authtoken')).subscribe(data => {
-        this.commentService.getComments(this.model._id).subscribe(data => {
-          this.comments = data;
-          this.forEdit = '';
+      this.updateComment = this.validationService.validateObj(this.comment);
+      if (this.updateComment) {
+        this.commentService.updateComment(id, this.comment, localStorage.getItem('authtoken')).subscribe(data => {
+          this.commentService.getComments(this.model._id).subscribe(data => {
+            this.comments = data;
+            this.forEdit = '';
+            this.updateComment = true;
+          })
         })
-      })
+      }
+      setTimeout(() => {
+        this.updateComment = true;
+      }, 3000)
+
     }, err => {
 
     });
+
+
   }
 
   addComment() {
@@ -98,12 +117,19 @@ export class DetailArticleComponent implements OnInit {
     this.comment.articleId = this.model._id;
     this.comment.author = localStorage.getItem('username');
     this.comment.date = strDate;
-    this.commentService.addComment(this.comment).subscribe(data => {
-      this.comment = new AddCommentModel("", "", "", "");
-      this.commentService.getComments(this.model._id).subscribe(data => {
-        this.comments = data;
+
+    this.checker = this.validationService.validateObj(this.comment)
+    if (this.checker) {
+      this.commentService.addComment(this.comment).subscribe(data => {
+        this.comment = new AddCommentModel("", "", "", "");
+        this.commentService.getComments(this.model._id).subscribe(data => {
+          this.comments = data;
+        })
       })
-    })
+    }
+    setTimeout(() => {
+      this.checker = true;
+    }, 3000)
   }
 
 }
